@@ -57,9 +57,9 @@ cd rhombus_project
 python manage.py runserver
 ```
 
-### Fronend Setup
+### React TypeScript Project
 
-# React TypeScript Project
+# Fronend Setup
 
 This project is a simple template for a React application built with TypeScript.
 
