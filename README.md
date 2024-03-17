@@ -2,7 +2,7 @@
 
 Read excel or csv file using pandas library and Frontend framework ReactJs.
 
-### Backend Setup
+# Backend Setup
 
 Follow the steps below to set up the project on your local machine:
 
@@ -57,9 +57,7 @@ cd rhombus_project
 python manage.py runserver
 ```
 
-### React TypeScript Project
-
-# Fronend Setup
+# Fronend Setup (React + TypeScript)
 
 This project is a simple template for a React application built with TypeScript.
 
