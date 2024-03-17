@@ -3,6 +3,7 @@ import "./Table.scss";
 import { TableProps } from "./Table.types";
 
 const Table: React.FC<TableProps> = ({ data }) => {
+  // Extract unique headers from the data to display table columns
   const headers: string[] = Array.from(
     new Set(data.flatMap((row) => Object.keys(row)))
   );

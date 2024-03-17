@@ -56,3 +56,32 @@ Navigate to the directory of the cloned repository using the cd command:
 cd rhombus_project
 python manage.py runserver
 ```
+
+### Fronend Setup
+
+# React TypeScript Project
+
+This project is a simple template for a React application built with TypeScript.
+
+### Prerequisites
+
+- Node.js and npm installed on your machine
+
+### 1. Create a Virtual Environment:
+
+Navigate to the react project directory:
+
+```bash
+   cd react-project
+   npm install
+```
+
+### 2. make .env file and copy env.dev to .env
+
+### 3. Start project on dev:
+
+Navigate to the react project directory:
+
+```bash
+   npm run dev
+```
