@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import React, { useRef, useState } from "react";
 
-import { ALLOW_FILE } from "../../constants/constants";
+import { ALLOW_FILE, FILE_UNITS } from "../../constants/constants";
 import { ERROR, SUCCESS } from "../../constants/stateConstants";
 import "./UploadFiles.scss";
 import { File } from "./UploadFiles.types";
@@ -18,7 +18,7 @@ const UploadFiles: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const { showError, showSuccess } = useToast(); // Use the custom hook
-  const [responseData, setResponseData] = useState<any>([]);
+  const [responseData, setResponseData] = useState<any>([]); // State to store response data from server
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = event.target.files;
@@ -77,13 +77,12 @@ const UploadFiles: React.FC = () => {
   };
 
   const formatFileSize = (size: number): string => {
-    const units = ["B", "KB", "MB", "GB"];
     let index = 0;
-    while (size >= 1024 && index < units.length - 1) {
+    while (size >= 1024 && index < FILE_UNITS.length - 1) {
       size /= 1024;
       index++;
     }
-    return `${size.toFixed(2)} ${units[index]}`;
+    return `${size.toFixed(2)} ${FILE_UNITS[index]}`;
   };
 
   return (
