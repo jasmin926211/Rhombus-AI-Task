@@ -28,10 +28,11 @@ def process_data(request):
         try:
             data = process_csv(uploaded_file, chunksize=10000)
             # Extract data types information
-            data_types_info = data.dtypes.apply(lambda x: x.name).to_dict()
+            # data_types_info = data.dtypes.apply(lambda x: x.name).to_dict()
             # Convert DataFrame to list of dictionaries
             data_list = data.to_dict(orient='records')
-            return JsonResponse({'success': True, 'data': data_list, 'dataTypes': data_types_info})
+            # Return response as JSON object
+            return JsonResponse({'success': True, 'data': data_list})
         except ValueError as e:
             return JsonResponse({'error': str(e)}, status=400)
     elif uploaded_file.name.endswith(('.xls', '.xlsx')):
@@ -40,6 +41,7 @@ def process_data(request):
             data = process_excel(uploaded_file, chunksize=10000)
             # Convert DataFrame to list of dictionaries
             data_list = data.to_dict(orient='records')
+            # Return response as JSON object
             return JsonResponse({'success': True, 'data': data_list})
         except ValueError as e:
             return JsonResponse({'error': str(e)}, status=400)

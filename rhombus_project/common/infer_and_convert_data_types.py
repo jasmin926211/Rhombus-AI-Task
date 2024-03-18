@@ -96,7 +96,7 @@ def infer_and_convert_data_types(df):
 
         # Attempt to convert to datetime
         try:
-            date_vals = pd.to_datetime(df[col], errors='coerce', infer_datetime_format=True)
+            date_vals = pd.to_datetime(df[col], errors='coerce', format='%Y-%m-%d')
             if not date_vals.isna().all():
                 df[col] = date_vals
                 continue
