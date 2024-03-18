@@ -90,6 +90,7 @@ def infer_and_convert_data_types(df):
     for col in df.columns:
         # Attempt to convert to numeric
         numeric_vals = pd.to_numeric(df[col], errors='coerce')
+
         if not numeric_vals.isna().all():  
             df[col] = numeric_vals
             continue
@@ -104,7 +105,9 @@ def infer_and_convert_data_types(df):
             pass
 
         # Check if the column should be categorical
-        if len(df[col].unique()) / len(df[col]) < 0.5:  
-            df[col] = df[col].astype('category')
+        if df[col].dtype == 'object':
+            unique_values_ratio = len(df[col].unique()) / len(df[col])
+            if unique_values_ratio < 0.5:
+                df[col] = df[col].astype('category')
 
     return df

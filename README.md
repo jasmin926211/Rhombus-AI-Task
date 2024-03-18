@@ -48,7 +48,15 @@ To exit the virtual environment, simply run:
 deactivate
 ```
 
-### 6. Run the Django Server
+### 6. Run Migrations: Make sure you have run the migrations to create the necessary database tables. In your terminal, navigate to your Django project directory and run:
+
+````bash
+cd rhombus_project
+python manage.py makemigrations
+python manage.py migrate
+```
+
+### 7. Run the Django Server
 
 Navigate to the directory of the cloned repository using the cd command:
 
@@ -83,3 +91,4 @@ Navigate to the react project directory:
 ```bash
    npm run dev
 ```
+````

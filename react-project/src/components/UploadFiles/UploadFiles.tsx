@@ -3,13 +3,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import React, { useRef, useState } from "react";
 
+import { TableComponent } from "../../components/Table";
 import { ALLOW_FILE, FILE_UNITS } from "../../constants/constants";
 import { ERROR, SUCCESS } from "../../constants/stateConstants";
+import { useToast } from "../../hooks/useToast"; // Import the custom hook
+import { DataTypesMapper } from "../DataMapperTable";
 import "./UploadFiles.scss";
-import { File } from "./UploadFiles.types";
-
-import { TableComponent } from "/#/components/Table";
-import { useToast } from "/#/hooks/usetoast"; // Import the custom hook
+import { File, RowData } from "./UploadFiles.types";
 
 const UploadFiles: React.FC = () => {
   const [selectedFileNames, setSelectedFileNames] = useState<File[]>([]);
@@ -18,7 +18,19 @@ const UploadFiles: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const { showError, showSuccess } = useToast(); // Use the custom hook
-  const [responseData, setResponseData] = useState<any>([]); // State to store response data from server
+  const [responseData, setResponseData] = useState<RowData[]>([]); // State to store response data from server
+  const [mapping, setMapping] = useState({});
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get<RowData[]>(
+        `${process.env.API_URL}/fetch-data/`
+      );
+      setResponseData(response.data);
+    } catch (error) {
+      showError(`${ERROR} - Somthing went wrong!! ${error}`);
+    }
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = event.target.files;
@@ -33,6 +45,10 @@ const UploadFiles: React.FC = () => {
     }));
     setSelectedFileNames((prevFiles) => [...prevFiles, ...files]);
     setFile(fileList[0]);
+  };
+
+  const handleMapping = (newMapping) => {
+    setMapping(newMapping);
   };
 
   const removeFile = (index: number) => {
@@ -54,17 +70,14 @@ const UploadFiles: React.FC = () => {
     const formData = new FormData();
     formData.append("file", file as Blob);
     try {
-      const response = await axios.post(
-        `${process.env.API_URL}/process-data/`,
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
-      console.log(response.data);
-      setResponseData(response.data.data);
+      await axios.post(`${process.env.API_URL}/process-data/`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       formRef.current?.reset();
       setSelectedFileNames([]);
       setFile(null);
       showSuccess(`${SUCCESS} - File uploaded`);
+      fetchData();
     } catch (error) {
       showError(`${ERROR} - Somthing went wrong!! ${error}`);
     }
@@ -132,7 +145,8 @@ const UploadFiles: React.FC = () => {
             </div>
           </div>
         </form>
-        {responseData && <TableComponent data={responseData} />}
+        {responseData.length > 0 && <TableComponent data={responseData} />}
+        <DataTypesMapper onMapping={handleMapping} />
       </div>
     </div>
   );
