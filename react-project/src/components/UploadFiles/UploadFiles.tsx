@@ -7,7 +7,6 @@ import { TableComponent } from "../../components/Table";
 import { ALLOW_FILE, FILE_UNITS } from "../../constants/constants";
 import { ERROR, SUCCESS } from "../../constants/stateConstants";
 import { useToast } from "../../hooks/useToast"; // Import the custom hook
-import { DataTypesMapper } from "../DataMapperTable";
 import "./UploadFiles.scss";
 import { File, RowData } from "./UploadFiles.types";
 
@@ -146,7 +145,6 @@ const UploadFiles: React.FC = () => {
           </div>
         </form>
         {responseData.length > 0 && <TableComponent data={responseData} />}
-        <DataTypesMapper onMapping={handleMapping} />
       </div>
     </div>
   );
