@@ -1,21 +1,35 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { ERROR, SUCCESS } from "../../constants/stateConstants";
+import { useToast } from "../../hooks/useToast"; // Import the custom hook
 import "./Table.scss";
-import { TableProps } from "./Table.types";
-
-interface DataTypeMapping {
-  [key: string]: string;
-}
+import { DataTypeMapping, TableProps } from "./Table.types";
 
 const Table: React.FC<TableProps> = ({ data }) => {
   const [dataTypeOverrides, setDataTypeOverrides] = useState<DataTypeMapping>(
     {}
   );
+  const { showError, showSuccess } = useToast();
 
   const dataTypeMapping: DataTypeMapping = {
     object: "Text",
     datetime64: "Date",
-    // Add more mappings as needed
+    int64: "Integer",
+    float64: "Float",
+    bool: "Boolean",
   };
+
+  useEffect(() => {
+    // Call the API to update data type mappings when they change
+    axios
+      .post(`${process.env.API_URL}/update-data-types/`, dataTypeOverrides)
+      .then(() => {
+        showSuccess(`${SUCCESS} - Update data types successfully`);
+      })
+      .catch((error) => {
+        showError(`${ERROR} - Somthing went wrong!! ${error}`);
+      });
+  }, [dataTypeOverrides]);
 
   const handleDataTypeOverride = (columnName: string, dataType: string) => {
     setDataTypeOverrides((prevOverrides) => ({

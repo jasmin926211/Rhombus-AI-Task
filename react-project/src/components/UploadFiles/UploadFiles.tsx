@@ -46,10 +46,6 @@ const UploadFiles: React.FC = () => {
     setFile(fileList[0]);
   };
 
-  const handleMapping = (newMapping) => {
-    setMapping(newMapping);
-  };
-
   const removeFile = (index: number) => {
     setSelectedFileNames((prevFiles) =>
       prevFiles.filter((_, i) => i !== index)

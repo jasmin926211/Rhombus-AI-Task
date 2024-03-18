@@ -4,6 +4,9 @@ from django.http import JsonResponse
 from common.infer_and_convert_data_types import process_csv, process_excel
 from .models import UploadedData
 from django.db.utils import IntegrityError
+from django.db.models import F
+from django.db import transaction
+
 
 @api_view(['GET'])
 def hello_world(request):
@@ -64,3 +67,17 @@ def fetch_data(request):
         data_list.append(data_instance.data)
 
     return JsonResponse(data_list, safe=False)
+
+
+@api_view(['POST'])
+def update_data_types(request):
+    """
+    API endpoint to update data types for columns.
+    """
+    try:
+        data = request.data
+        for column_name, data_type in data.items():
+            UploadedData.objects.all().update(**{column_name: F(data_type)})
+        return Response({'success': True}, status=201)
+    except Exception as e:
+        return Response({'error': str(e)}, status=500)
